@@ -1,0 +1,124 @@
+/*
+ Copyright 2012 Diego Mendoza (damphell)
+
+ This file is part of "METODO DE APLICACION DEL PROTOCOLO DE REPARTO DE 
+ SECRETOS - ESQUEMA ADI SHAMIR", it's a library for C/C++.
+
+ This library is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "connectDB.h"
+
+///Libreria para conexion, a las bases de datos habilitado,
+///PostgreSQL, MySQL.
+
+///Actualiza datos usuario.
+int actualiza_datos(char datosBD[][60],int selDB, unsigned long int sec)
+{
+  strcpy(server,datosBD[0]);
+  strcpy(user,datosBD[1]);
+  strcpy(password,datosBD[2]);
+  strcpy(database,datosBD[3]);
+  strcpy(nombre_tabla,datosBD[4]);
+  strcpy(campo_usuario,datosBD[5]);
+  strcpy(campo_pass,datosBD[6]);
+  
+  sprintf(sql,"update %s set %s = sha1(\'%ld\') where %s = \'usuario_reparto\'",nombre_tabla,campo_pass,sec,campo_usuario);
+
+  int ret = 0;
+  switch(selDB)
+  {
+  case 1:
+            // Enviar la consulta SQL
+         conn = mysql_init(NULL);
+	 ///Procedimiento para conectar a Gestor de Base de Datos MySQL
+	 // Conectar a la Base de Datos
+	 if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+	   ret = 0;
+	   //printw("\n 1 variable retorno: %d  \n",retorno);
+	 } 
+	 if (mysql_query(conn,sql)) {
+	   ret = 0;
+	   //printw("\n 2 variable retorno: %d  \n",retorno);
+	 }
+	 else{
+	   ret = 1;
+	   //printw("\n 3 variable retorno: %d  \n",retorno);
+	 }
+	 
+	 res = mysql_use_result(conn);
+	 mysql_free_result(res);/**/
+	 //	 retorno =1;
+  	 mysql_close(conn);
+	 break;
+  case 2:
+    break;
+  default: ret = 0;
+    break;
+  }
+  //printw("\n final variable retorno: %d  \n",retorno);
+  return ret;
+}
+
+///Autentica base de datos
+int autentica_secreto(char datosBD[][60], int selDB, unsigned long int sec)
+{
+  //variable de retorno
+  int ret = 0;
+  strcpy(server,datosBD[0]);
+  strcpy(user,datosBD[1]);
+  strcpy(password,datosBD[2]);
+  strcpy(database,datosBD[3]);
+  strcpy(nombre_tabla,datosBD[4]);
+  strcpy(campo_usuario,datosBD[5]);
+  strcpy(campo_pass,datosBD[6]);
+  
+  sprintf(sql,"select * from %s where sha1(\'%ld\') = %s",nombre_tabla,sec,campo_pass);
+
+  switch(selDB)
+  {
+  case 1: //MYSQL *conn;
+          // Enviar la consulta SQL
+         conn = mysql_init(NULL);
+	 ///Procedimiento para conectar a Gestor de Base de Datos MySQL
+	 // Conectar a la Base de Datos
+	 if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+	   ret = 0;
+	   //printw("\n 1 variable retorno: %d  \n",retorno);
+	 } 
+	 if (mysql_query(conn,sql)) {
+	   ret = 0;
+	   //printw("\n 2 variable retorno: %d  \n",retorno);
+	 }
+
+	 res = mysql_use_result(conn);
+
+	 if((row = mysql_fetch_row(res)) != NULL){
+	   ret = 1;
+	 }
+	 
+	 
+	 mysql_free_result(res);/**/
+	 //	 retorno =1;
+  	 mysql_close(conn);
+
+    break;
+  case 2:
+    break;
+  default: return 0;
+    break;
+  }
+  return ret;
+}
+
