@@ -9,6 +9,7 @@ int main()
   int k = 3; //numero de minimo de sombras requeridas. 
   unsigned long int sombras[n][2];
   char datbd[7][60]={"127.0.0.1","damphell","academy","protocolo_reparto","user","nombre_usuario","password"};
+ //Usando Variables por defecto
   
   /////
   char local[5][50] = {"ketano@ketanolab.com","ketano@ketanolab.com","ketano","correo.ketanolab.com","25"};

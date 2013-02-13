@@ -63,6 +63,7 @@ int actualiza_datos(char datosBD[][60],int selDB, unsigned long int sec)
   	 mysql_close(conn);
 	 break;
   case 2:
+	//Aqui es donde va las consultas para postgreSQL
     break;
   default: ret = 0;
     break;
