@@ -1,9 +1,9 @@
-TESIS DE GRADO - Universidad Salesiana de Bolivia
+<h4>TESIS DE GRADO - Universidad Salesiana de Bolivia</h4>
 
-"Metodo de aplicacion del protocolo de reparto de secretos - Esquema de Adi Shamir"
+<h2>"Metodo de aplicacion del protocolo de reparto de secretos - Esquema de Adi Shamir"</h2>
 ===================================================================================
 
-Autor: Diego Abel Mendoza Poma
+Autor: Diego Abel Mendoza Poma<br>
 e-mail: diegomcsb@gmail.com
 
 
